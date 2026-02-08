@@ -367,3 +367,51 @@ output_name = ['UNR']
 for i in range(len(table_name)):
     print(output_name[i])
     ratio_rmspe_graph(table_name[i], output_name[i])
+
+
+# Donor Pool Sensitvity Aanalysis
+don7 = pd.read_csv("Synth_Results/Synth_Robust_Check_County N = 7_Results.csv")
+don6 = pd.read_csv("Synth_Results/Synth_Robust_Check_County N = 6_Results.csv")
+don5 = pd.read_csv("Synth_Results/Synth_Robust_Check_County N = 5_Results.csv")
+don4 = pd.read_csv("Synth_Results/Synth_Robust_Check_County N = 4_Results.csv")
+don3 = pd.read_csv("Synth_Results/Synth_Robust_Check_County N = 3_Results.csv")
+don2 = pd.read_csv("Synth_Results/Synth_Robust_Check_County N = 2_Results.csv")
+donlt = pd.read_csv("Synth_Results/Synth_Robust_Check_Donors Weight lt 0.01_Results.csv")
+
+for df in [don7, don6, don5, don4, don3, don2, donlt]:
+  df['Percent Diff'] = (df['real_y'] - df['synth_y'])
+
+plot_synth_diff(don7, 
+'N=7 in Donor Pool', 
+'Percentage Point Difference', 
+'Robust_Check_County N =7')
+
+plot_synth_diff(don6, 
+'N=6 in Donor Pool', 
+'Percentage Point Difference', 
+'Robust_Check_County N =6')
+
+plot_synth_diff(don5, 
+'N=5 in Donor Pool', 
+'Percentage Point Difference', 
+'Robust_Check_County N =5')
+
+plot_synth_diff(don4, 
+'N=4 in Donor Pool', 
+'Percentage Point Difference', 
+'Robust_Check_County N =4')
+
+plot_synth_diff(don5, 
+'N=3 in Donor Pool', 
+'Percentage Point Difference', 
+'Robust_Check_County N =3')
+
+plot_synth_diff(don2, 
+'N=2 in Donor Pool', 
+'Percentage Point Difference', 
+'Robust_Check_County N =2')
+
+plot_synth_diff(donlt, 
+'Donor Weight < 0.01', 
+'Percentage Point Difference', 
+'Robust_Check_County DW lt 0.01')
