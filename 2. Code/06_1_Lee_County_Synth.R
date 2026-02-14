@@ -17,11 +17,18 @@ source('2. Code/06_2_Helper_Funcitons.R')
 
 unit <- unit_of_analysis(df, 'Lee')
 
+saveRDS(unit, '1. Data/unit.rds')
+
 # create the data set to analyze hurricane ian
 df_ian <- transform_for_synth(df, month_year_=as.Date("2021-01-01"))
 
+
+saveRDS(df_ian, '1. Data/df_transformed_for_synth.rds')
+
 # Runs cluster analysis and selects donor pool
 source('2. Code/06_3_Donor_Pool_Cluster_Analysis.R')
+
+saveRDS(df_k, '1. Data/dfs_cluster_analysis.rds')
 
 # Running the synthetic control ------------------
 
@@ -34,9 +41,10 @@ for (name in names(df_k)){
   synth_models[[name]] <- run_synth(df_k[[name]])
 }
 
+saveRDS(synth_models, '1. Data/synth_models.rds')
+
 # other metrics
-
-
+ 
 for (name in names(df_k)){
   #print(name)
   print(synth_models[[name]]  %>% plot_differences())
@@ -85,7 +93,11 @@ k_use <- rmspe_table %>%
   filter(control_unit_mspe == min(control_unit_mspe)) %>% 
   select(df_k)
 
+saveRDS(k_use, "1. Data/k_use.rds")
+
 ian_lee <- synth_models[[k_use$df_k]]
+
+saveRDS(ian_lee, "1. Data/main_synth_model.rds")
 
 ian_lee %>% export_results("Lee_UNR")
 

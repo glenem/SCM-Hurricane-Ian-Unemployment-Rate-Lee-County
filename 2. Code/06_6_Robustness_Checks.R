@@ -6,12 +6,18 @@
 #
 #
 ###############################
-df_robust_chk <- df_k[[k_use$df_k]]
+rm(list = ls())
 
-rm(df, df_ian, left, loss, predictor_weights, right, rmspe_table, 
-   table_df, tmep, unit_weights, unit_weights_sorted, 
-   xtab, half_n, n, name, rmse, rmse_row, temp, df_k, 
-   synth_models, k_use)
+source('2. Code/06_2_Helper_Funcitons.R')
+
+k_use <- readRDS("1. Data/k_use.rds")
+df_k <- readRDS('1. Data/dfs_cluster_analysis.rds')
+ian_lee <- readRDS("1. Data/main_synth_model.rds")
+unit <- readRDS('1. Data/unit.rds')
+
+df <- readRDS('1. Data/df_transformed_for_synth.rds')
+
+df_robust_chk <- df_k[[k_use$df_k]]
 
 # Donor Pool Sensitivity Analysis ------------------
 robust_models_weight = list()
@@ -23,14 +29,15 @@ unit_weights <- ian_lee %>%
 counter <- length(unit_weights$unit)
 
 # Model needs to run with at least two control units
-while (counter > 1){
+while (counter > 3){
   if(counter == 7){
     county_list <- unique(c(unit_weights$unit, unit$County))
     }
   else{
-    min_val <- min(unit_weights$weight)
+    val <- max(unit_weights$weight)
+    print(val)
     unit_weights <- unit_weights %>%
-      filter(weight > min_val)
+      filter(weight < val)
     county_list <- unique(c(unit_weights$unit, unit$County))
   }
   
@@ -51,6 +58,17 @@ county_list <- unique(c(unit_weights$unit, unit$County))
 df_run <- df_robust_chk %>% filter(County %in% county_list)
 
 robust_models_weight[['Donors Weight lt 0.01']] <- run_synth(df_run, placebos = F)
+
+
+# Run model with none of the original donors
+unit_weights <- ian_lee %>% 
+  grab_unit_weights() 
+
+df <- df %>% filter(!(County %in% unit_weights$unit))
+
+unique(df$County)
+
+robust_models_weight[['Diff Donor Pool']] <- run_synth(df, placebos = F)
 
 # Export robustness checks with donor pool sensitivity analysis
 for (i in names(robust_models_weight)){
@@ -80,6 +98,6 @@ for (name in names(robust_models_weight)){
 
 # Co-variate sensitivity analysis -----------
 
-pred_weights <- ian_lee %>% grab_predictor_weights()
+#pred_weights <- ian_lee %>% grab_predictor_weights()
 
-ian_lee %>% plot_weights()
+#ian_lee %>% plot_weights()

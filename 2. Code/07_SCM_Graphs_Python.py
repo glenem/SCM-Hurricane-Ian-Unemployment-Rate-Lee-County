@@ -373,12 +373,10 @@ for i in range(len(table_name)):
 don7 = pd.read_csv("Synth_Results/Synth_Robust_Check_County N = 7_Results.csv")
 don6 = pd.read_csv("Synth_Results/Synth_Robust_Check_County N = 6_Results.csv")
 don5 = pd.read_csv("Synth_Results/Synth_Robust_Check_County N = 5_Results.csv")
-don4 = pd.read_csv("Synth_Results/Synth_Robust_Check_County N = 4_Results.csv")
-don3 = pd.read_csv("Synth_Results/Synth_Robust_Check_County N = 3_Results.csv")
-don2 = pd.read_csv("Synth_Results/Synth_Robust_Check_County N = 2_Results.csv")
+don = pd.read_csv("Synth_Results/Synth_Robust_Check_Diff Donor Pool_Results.csv")
 donlt = pd.read_csv("Synth_Results/Synth_Robust_Check_Donors Weight lt 0.01_Results.csv")
 
-for df in [don7, don6, don5, don4, don3, don2, donlt]:
+for df in [don7, don6, don5, don, donlt]:
   df['Percent Diff'] = (df['real_y'] - df['synth_y'])
 
 plot_synth_diff(don7, 
@@ -396,20 +394,10 @@ plot_synth_diff(don5,
 'Percentage Point Difference', 
 'Robust_Check_County N =5')
 
-plot_synth_diff(don4, 
-'N=4 in Donor Pool', 
+plot_synth_diff(don, 
+'W/O Full Set of Base Donors', 
 'Percentage Point Difference', 
-'Robust_Check_County N =4')
-
-plot_synth_diff(don5, 
-'N=3 in Donor Pool', 
-'Percentage Point Difference', 
-'Robust_Check_County N =3')
-
-plot_synth_diff(don2, 
-'N=2 in Donor Pool', 
-'Percentage Point Difference', 
-'Robust_Check_County N =2')
+'Robust_Check_WO_Base_Donors')
 
 plot_synth_diff(donlt, 
 'Donor Weight < 0.01', 
