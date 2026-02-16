@@ -49,3 +49,10 @@ org_wd <- getwd()
 source_python('2. Code/07_SCM_Graphs_Python.py')
 setwd(org_wd)
 rm(list = ls())
+
+# R to create a hetmap of the donor pool
+source('2. Code/08_FL_County_Heatmap_Donor_Pool.R')
+
+source('2. Code/08_2_covariate_balance_table.R')
+
+source('2. Code/09_file_managment.R')
